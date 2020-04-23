@@ -1,7 +1,7 @@
 {
-  "name": "valorant-drops-generator",
+  "name": "valorant-drops-helper",
   "version": "1.0.0",
-  "description": "Twitch/Riot account creator",
+  "description": "Twitch/Riot account creator & linker",
   "main": "app.js",
   "repository": "https://github.com/Morb0/valorant-drops.git",
   "author": "Morbo",
