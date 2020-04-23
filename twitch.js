@@ -56,28 +56,11 @@ const registerAccount = async payload => {
     }
 };
 
-// const getClientId = async () => {
-//     const {headers} = await axios.get('http://twitch.com/signup');
-//     const cookies = headers['set-cookie'];
-//     const clientId = extractClientIdFromCookie(cookies[0]);
-//     return clientId;
-// };
-//
-// const extractClientIdFromCookie = cookie => {
-//     return cookie.split(';')[0].split('=')[1];
-// };
-
 const solveArkoseCaptcha = () => solveFunCaptcha(
     'https://www.twitch.tv/signup',
     process.env.TWITCH_FUNCAPTCHA_SIGNUP_KEY
 )
     .then(token => token.replace('https://twitch-api.arkoselabs.com', 'https://client-api.arkoselabs.com'));
-// .then(token => {
-//     const tokenParts = token.split('|');
-//     const mainPart = tokenParts[0];
-//     const template = '|r=eu-west-1|metabgclr=transparent|guitextcolor=%23000000|metaiconclr=%23757575|meta=3|pk=E5554D43-23CC-1982-971D-6A2262A2CA24|at=40|sup=1|rid=46|atp=2|cdn_url=https://cdn.arkoselabs.com/fc|lurl=https://audio-eu-west-1.arkoselabs.com|surl=https://client-api.arkoselabs.com';
-//     return mainPart+template;
-// });
 
 const getAccessToken = async cookies => {
     try {
