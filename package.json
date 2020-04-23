@@ -1,0 +1,9 @@
+{
+  "name": "valorant-drops-generator",
+  "version": "1.0.0",
+  "description": "Twitch/Riot account creator",
+  "main": "app.js",
+  "repository": "https://github.com/Morb0/valorant-drops.git",
+  "author": "Morbo",
+  "license": "MIT"
+}
