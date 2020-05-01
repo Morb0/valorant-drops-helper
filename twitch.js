@@ -22,11 +22,14 @@ module.exports.createTwitchAccount = async () => {
     const verifyMail = await waitFirstMail(credentials.username);
     console.log('Getting verification code from email');
     const verifyCode = extractVerifyCodeFromMailTitle(verifyMail.title);
+    console.log('Getting user id');
+    const userId = await getUserId(accessToken);
     console.log('Verify email');
-    await verifyEmail(accessToken, email, verifyCode);
+    await verifyEmail(accessToken, userId, email, verifyCode);
     console.log('Done');
 
     return {
+        userId,
         ...credentials,
         email,
         cookies,
@@ -65,7 +68,7 @@ const solveArkoseCaptcha = () => solveFunCaptcha(
 const getAccessToken = async cookies => {
     try {
         const headerCookies = convertCookieForRequestHeader(cookies);
-        const {data} = await axios.get('https://id.twitch.tv/oauth2/authorize', {
+        const {headers} = await axios.get('https://id.twitch.tv/oauth2/authorize', {
             headers: {Cookie: headerCookies},
             params: {
                 client_id: CLIENT_ID,
@@ -76,16 +79,17 @@ const getAccessToken = async cookies => {
                 scope: ['chat_login', 'user_read', 'user_subscriptions', 'user_presence_friends_read'].join(' '),
             },
             maxRedirects: 0,
-            validateStatus: status => status >= 200 && status < 300 || status === 302,
+            validateStatus: status => status === 302,
         });
-        return extractAccessTokenFromRedirectBody(data);
+        const redirectURL = headers['location'];
+        return extractAccessTokenFromURL(redirectURL);
     } catch (e) {
         console.debug(e.response.data);
         throw new Error('Error while getting access token for Twitch account');
     }
 };
 
-const extractAccessTokenFromRedirectBody = body => body.split('=')[2].split('&')[0];
+const extractAccessTokenFromURL = url => url.split('=')[1].split('&')[0];
 const extractVerifyCodeFromMailTitle = title => /\d+/.exec(title)[0];
 
 module.exports.validateAuthToken = async authToken => {
@@ -93,13 +97,12 @@ module.exports.validateAuthToken = async authToken => {
         headers: {
             Authorization: `OAuth ${authToken}`,
         },
-        validateStatus: status => status >= 200 && status < 300 || status === 401,
+        validateStatus: status => status === 401,
     });
     return status === 401;
 };
 
-const verifyEmail = async (accessToken, email, code) => {
-    const userId = await getUserId(accessToken);
+const verifyEmail = async (accessToken, userId, email, code) => {
     const {request,error} = await sendGQLRequest(accessToken, `
         mutation VerifyEmail {
           validateVerificationCode(input: {address: "${email}", code: "${code}", key: "${userId}"}) {

@@ -16,10 +16,3 @@ module.exports.generateRandomCredentials = () => ({
     birthday: this.generateBirthday(),
 });
 module.exports.convertCookieForRequestHeader = cookies => cookies.map(cookies => cookies.split(';')[0]).join(';');
-
-// function genBirthdayStr() {
-//     let { day, month, year } = getBirthday();
-//     if (day < 10) day = '0'+day;
-//     if (month < 10) month = '0'+month;
-//     return `${year}-${month}-${day}`;
-// }

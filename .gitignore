@@ -2,3 +2,4 @@ node_modules
 _old
 .env
 .idea
+results.json

@@ -3,7 +3,22 @@
   "version": "1.0.0",
   "description": "Twitch/Riot account creator & linker",
   "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
   "repository": "https://github.com/Morb0/valorant-drops.git",
   "author": "Morbo",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "anticaptcha": "^2.0.3",
+    "axios": "^0.19.2",
+    "axios-cookiejar-support": "^1.0.0",
+    "dotenv": "^8.2.0",
+    "fast-xml-parser": "^3.16.0",
+    "generate-password": "^1.5.1",
+    "jwt-decode": "^2.2.0",
+    "random-int": "^2.0.1",
+    "tough-cookie": "^4.0.0",
+    "username-generator": "^1.1.0"
+  }
 }
