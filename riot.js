@@ -4,13 +4,15 @@ const {generateRandomCredentials, convertCookieForRequestHeader} = require('./ut
 const {getEmail} = require('./trash-mail');
 const {solveV3Recaptcha} = require('./anti-captcha');
 
+const recaptchaPublicKey = '6Lc3HAsUAAAAACsN7CgY9MMVxo2M09n_e4heJEiZ';
+
 module.exports.createRiotAccount = async () => {
     console.log('Generating basic credentials');
     const credentials = generateRandomCredentials();
     console.log('Getting email');
     const email = getEmail(credentials.username);
     console.log('Solving captcha');
-    const captchaToken = await solveV3Recaptcha('https://signup.na.leagueoflegends.com/en/signup/index#/registratio', process.env.RIOT_RECAPTCHA_KEY);
+    const captchaToken = await solveV3Recaptcha('https://signup.na.leagueoflegends.com/en/signup/index#/registratio', recaptchaPublicKey);
     console.log('Generating payload');
     const payload = await generatePayload(credentials, email, captchaToken);
     console.log('Registering account');

@@ -4,6 +4,7 @@ const {getEmail, waitFirstMail} = require('./trash-mail');
 const {solveFunCaptcha} = require('./anti-captcha');
 
 const CLIENT_ID = 'kimne78kx3ncx6brgo4mv6wki5h1ko';
+const funcaptchaSignupPublicKey = 'E5554D43-23CC-1982-971D-6A2262A2CA24';
 
 module.exports.createTwitchAccount = async () => {
     console.log('Generating basic credentials');
@@ -61,7 +62,7 @@ const registerAccount = async payload => {
 
 const solveArkoseCaptcha = () => solveFunCaptcha(
     'https://www.twitch.tv/signup',
-    process.env.TWITCH_FUNCAPTCHA_SIGNUP_KEY
+  funcaptchaSignupPublicKey,
 )
     .then(token => token.replace('https://twitch-api.arkoselabs.com', 'https://client-api.arkoselabs.com'));
 
